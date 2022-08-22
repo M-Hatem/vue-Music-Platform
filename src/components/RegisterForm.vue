@@ -85,6 +85,19 @@
       </vee-field>
       <error-message class="text-red-600" name="country" />
     </div>
+    <!-- Type -->
+    <div class="mb-3">
+      <label class="inline-block mb-2">Type</label>
+      <vee-field
+        as="select"
+        name="type"
+        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+      >
+        <option value="Artist">Artist</option>
+        <option value="Listener">Listener</option>
+      </vee-field>
+      <error-message class="text-red-600" name="type" />
+    </div>
     <!-- TOS -->
     <div class="mb-3 pl-6">
       <vee-field
@@ -106,6 +119,9 @@
   </vee-form>
 </template>
 <script>
+import { mapActions } from "pinia";
+import useUserStore from "@/stores/user";
+
 export default {
   name: "AppRegisterForm",
   data() {
@@ -118,21 +134,44 @@ export default {
         confirm_password: "confirmed:@password",
         country: "required|country_excluded:Antartica",
         tos: "tos",
+        type: "required",
       },
       userData: {
         country: "USA",
+        tos: "1",
+        type: "Listener",
       },
       regInSubmission: false,
       regShowAlert: false,
-      regAlertVariant: "bg-green-500",
+      regAlertVariant: "bg-blue-500",
       regAlertMsg: "Please wait! You are Logged in.",
     };
   },
   methods: {
-    register(formData) {
+    ...mapActions(useUserStore, {
+      createUser: "register",
+    }),
+    async register(formData) {
       this.regInSubmission = true;
       this.regShowAlert = true;
-      console.log(formData);
+      this.regAlertVariant = "bg-blue-500";
+      this.regAlertMsg = "Loading, You are being registered!";
+
+      try {
+        await this.createUser(formData);
+      } catch (error) {
+        this.regInSubmission = false;
+        this.regShowAlert = true;
+        this.regAlertVariant = "bg-red-500";
+        this.regAlertMsg = "Something went wrong, Please try again!";
+        return;
+      }
+
+      this.regInSubmission = true;
+      this.regShowAlert = true;
+      this.regAlertVariant = "bg-green-500";
+      this.regAlertMsg = "Success, You have Signed up successfully!";
+      window.location.reload();
     },
   },
 };

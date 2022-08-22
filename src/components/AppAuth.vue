@@ -96,6 +96,5 @@ export default {
       modalVisibility: "isOpen",
     }),
   },
-  methods: {},
 };
 </script>
