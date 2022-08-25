@@ -1,1 +1,1 @@
-<template>Hello from About</template>
+<template>Hello from About Page!</template>
