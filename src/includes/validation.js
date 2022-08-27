@@ -15,8 +15,8 @@ import {
   max_value as maxValue,
   confirmed,
   not_one_of as exclude,
+  alpha_dash as alphaDash,
 } from "@vee-validate/rules";
-// comfirmed,
 
 export default {
   install(app) {
@@ -35,6 +35,7 @@ export default {
     defineRule("confirmed", confirmed);
     defineRule("exclude", exclude);
     defineRule("country_excluded", exclude);
+    defineRule("alpha_dash", alphaDash);
 
     configure({
       generateMessage: (ctx) => {
@@ -49,6 +50,7 @@ export default {
           exclude: `You aren't allowed to use this value in the field ${ctx.field}.`,
           country_excluded: `Due to restrictions, we don't accept users from this location.`,
           tos: `You must accept our policies.`,
+          alpha_dash: `You must only use alphabetical characters, number and dashs.`,
         };
 
         const message = messages[ctx.rule.name]

@@ -12,7 +12,7 @@ export default defineStore("user", {
         formData.password
       );
 
-      usersCollection.doc(userCred.user.uid).set({
+      await usersCollection.doc(userCred.user.uid).set({
         name: formData.name,
         email: formData.email,
         age: formData.age,
@@ -20,8 +20,8 @@ export default defineStore("user", {
         type: formData.type,
       });
 
-      userCred.user.updateProfile({
-        displayName: userCred.user.name,
+      await userCred.user.updateProfile({
+        displayName: formData.name,
       });
 
       this.userLoggedIn = true;
